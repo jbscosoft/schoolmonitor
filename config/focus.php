@@ -135,6 +135,7 @@ function add_user() {
     $phone2 = $_POST['phone2'];
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $password_hash = password_hash($password,PASSWORD_DEFAULT);
     $role = $_POST['group'];
     $accStatus = $_POST['accStatus'];
     $entryDate = date('Y/m/d H:i:s');
@@ -151,7 +152,7 @@ function add_user() {
         '" . $fname . "',
         '" . $designation . "',
         '" . $dob . "',
-        '" . $password . "',
+        '" . $password_hash . "',
         '" . $role . "',
         '" . $accStatus . "',
         '" . $date . "',
