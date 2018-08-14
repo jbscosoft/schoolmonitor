@@ -212,20 +212,42 @@ ob_start();
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-cog"></i>
-            <span>Settings</span>
+            <i class="fa fa-cog"></i> <span>Settings</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="?token=dXBkYXRlSW5zdERldGFpbHM"><i class="fa fa-circle-o"></i>School Details</a></li>
-            <li><a href="<?php echo '?token='.base64_encode('manageUsers') ?>"><i class="fa fa-circle-o"></i>Manage Users</a></li>
-            <li><a href="<?php echo '?token='.base64_encode('programme') ?>"><i class="fa fa-circle-o"></i>Programme</a></li>
+          <ul class="treeview-menu" style="display: none;">
+            <li class="treeview">
+              <a href="#"><i class="fa fa-circle-o"></i> Academics Settings
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="#"><i class="fa fa-circle-o"></i>Colleges</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i>Departments</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('programme') ?>"><i class="fa fa-circle-o"></i>Programmes</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('view_course') ?>"><i class="fa fa-circle-o"></i>Courseunits</a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i>Lecturer</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#"><i class="fa fa-circle-o"></i> System Settings
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+              <li><a href="?token=dXBkYXRlSW5zdERldGFpbHM"><i class="fa fa-circle-o"></i>Institute Details</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('manageUsers') ?>"><i class="fa fa-circle-o"></i>System Users </a></li>
+                <li><a href="#"><i class="fa fa-circle-o"></i>License</a></li>
 
-<li><a href="<?php echo '?token='.base64_encode('view_course') ?>"><i class="fa fa-circle-o"></i>Course</a></li>    
+              </ul>
+            </li>
           </ul>
         </li>
+     
     </section>
     <!-- /.sidebar -->
   </aside>
