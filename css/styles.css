@@ -1,0 +1,73 @@
+/***********************************************************************************************
+*
+*                               MODAL
+*
+***********************************************************************************************
+*/
+.modal-content{
+    border-radius: 3px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+.modal-header,
+.modal-body{
+    padding: 0px;
+}
+.modal-header > .box.box-primary{
+    border-top-color: #00c0ef;
+    margin-bottom: 0px;
+}
+.modal-header > .box.box-primary > .box-header {
+    padding: 0px 10px;
+}
+.modal-title {
+    line-height: 40px;
+}
+.modal-header .close {
+    margin-top: 0px;
+    margin-right: -10px;
+    width: fit-content;
+    padding: 8px 12px;
+}
+.modal-alert-wrapper{
+    padding: 2px 2px;
+}
+.modal-body > .box-footer{
+    border: 0px;
+    padding: 4px 7px 7px;
+}
+
+/***********************************************************************************************
+*
+*                               MAIN PAGE
+*
+***********************************************************************************************
+*/
+/*.wrapper {
+    height: 100%;
+    overflow: hidden;
+}
+.content-wrapper{
+    height: fit-content;
+    min-height: fit-content !important;
+}
+*/
+.no-padding{
+    padding: 0px;
+}
+.pointer{
+    cursor: pointer;
+}
+
+
+/***********************************************************************************************
+*
+*                               MEDIA QUERIES
+*
+***********************************************************************************************
+*/
+@media (min-width: 768px){
+    .modal-sm{
+        margin: 15% auto auto;
+    }
+}

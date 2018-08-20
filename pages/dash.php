@@ -12,17 +12,16 @@ ob_start();
 ?>
   <?php
           
-          if(login_check($mysqli) == true){
-          $id = getfield('institute_instituteID',$mysqli);
+      if(login_check($mysqli) == true){
+      $id = getfield('institute_instituteID',$mysqli);
+
+      $inst_name = getfield_inst('institute_name',$id,$mysqli);
+      echo $inst_name;
+      }else{
+        header('Location: http://localhost:9090/sims/?this=dXNldGhpc3RvbG9naW4=');
+      } 
+    ?>
     
-          $inst_name = getfield_inst('institute_name',$id,$mysqli);
-          echo $inst_name;
-          }else{
-            header('Location: http://localhost:9090/sims/?this=dXNldGhpc3RvbG9naW4=');
-          } 
-        ?>
-  
-  
   | SchoolMonitor
   
   </title>
@@ -50,6 +49,7 @@ ob_start();
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -87,7 +87,6 @@ ob_start();
               <img src="../dist/img/user-avatar.png" class="user-image" alt="User Image">
               <span class="hidden-xs">
               <?php  
-               
                   if(login_check($mysqli) == true){
                   $username = getfield('username',$mysqli);
                   $designation = getfield('designation',$mysqli);
@@ -96,13 +95,12 @@ ob_start();
                     header('Location: http://localhost:9090/sims/?this=dXNldGhpc3RvbG9naW4=');
                   } 
                 ?>
-    </span>
+              </span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
                 <img src="../dist/img/user-avatar.png" class="img-circle" alt="User Image">
-
                 <p>
                   <?php echo $username ?> - <?php echo $designation ?>
                   <small>Member since Nov. 2012</small>
@@ -139,26 +137,25 @@ ob_start();
       <p>
           <?php
           
-                  if(login_check($mysqli) == true){
-                  $id = getfield('institute_instituteID',$mysqli);
-            
-                  $inst_name = getfield_inst('institute_name',$id,$mysqli);
-                  echo $inst_name;
-                  }else{
-                    header('Location: http://localhost:9090/sims/?this=dXNldGhpc3RvbG9naW4=');
-                  } 
-                ?>
-          </p>
-  
+            if(login_check($mysqli) == true){
+            $id = getfield('institute_instituteID',$mysqli);
+      
+            $inst_name = getfield_inst('institute_name',$id,$mysqli);
+            echo $inst_name;
+            }else{
+              header('Location: http://localhost:9090/sims/?this=dXNldGhpc3RvbG9naW4=');
+            } 
+          ?>
+        </p>
       </div>
       <!-- search form -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
+            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+            </button>
+          </span>
         </div>
       </form>
       <!-- /.search form -->
@@ -225,11 +222,11 @@ ob_start();
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="#"><i class="fa fa-circle-o"></i>Colleges</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i>Departments</a></li>
-                <li><a href="<?php echo '?token='.base64_encode('programme') ?>"><i class="fa fa-circle-o"></i>Programmes</a></li>
-                <li><a href="<?php echo '?token='.base64_encode('view_course') ?>"><i class="fa fa-circle-o"></i>Courseunits</a></li>
-                <li><a href="#"><i class="fa fa-circle-o"></i>Lecturer</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('colleges') ?>"><i class="fa fa-circle-o"></i>Colleges</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('departments') ?>"><i class="fa fa-circle-o"></i>Departments</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('programmes') ?>"><i class="fa fa-circle-o"></i>Programmes</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('view_courses') ?>"><i class="fa fa-circle-o"></i>Courseunits</a></li>
+                <li><a href="<?php echo '?token='.base64_encode('lecturers') ?>"><i class="fa fa-circle-o"></i>Lecturer</a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -242,7 +239,6 @@ ob_start();
               <li><a href="?token=dXBkYXRlSW5zdERldGFpbHM"><i class="fa fa-circle-o"></i>Institute Details</a></li>
                 <li><a href="<?php echo '?token='.base64_encode('manageUsers') ?>"><i class="fa fa-circle-o"></i>System Users </a></li>
                 <li><a href="#"><i class="fa fa-circle-o"></i>License</a></li>
-
               </ul>
             </li>
           </ul>
@@ -284,10 +280,8 @@ ob_start();
           <li>
             <a href="javascript:void(0)">
               <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
                 <p>Will be 23 on April 24th</p>
               </div>
             </a>
@@ -295,10 +289,8 @@ ob_start();
           <li>
             <a href="javascript:void(0)">
               <i class="menu-icon fa fa-user bg-yellow"></i>
-
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
-
                 <p>New phone +1(800)555-1234</p>
               </div>
             </a>
@@ -306,10 +298,8 @@ ob_start();
           <li>
             <a href="javascript:void(0)">
               <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
-
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
-
                 <p>nora@example.com</p>
               </div>
             </a>
@@ -317,10 +307,8 @@ ob_start();
           <li>
             <a href="javascript:void(0)">
               <i class="menu-icon fa fa-file-code-o bg-green"></i>
-
               <div class="menu-info">
                 <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
-
                 <p>Execution time 5 seconds</p>
               </div>
             </a>
@@ -336,7 +324,6 @@ ob_start();
                 Custom Template Design
                 <span class="label label-danger pull-right">70%</span>
               </h4>
-
               <div class="progress progress-xxs">
                 <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
               </div>
@@ -348,7 +335,6 @@ ob_start();
                 Update Resume
                 <span class="label label-success pull-right">95%</span>
               </h4>
-
               <div class="progress progress-xxs">
                 <div class="progress-bar progress-bar-success" style="width: 95%"></div>
               </div>
@@ -360,7 +346,6 @@ ob_start();
                 Laravel Integration
                 <span class="label label-warning pull-right">50%</span>
               </h4>
-
               <div class="progress progress-xxs">
                 <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
               </div>
@@ -372,7 +357,6 @@ ob_start();
                 Back End Framework
                 <span class="label label-primary pull-right">68%</span>
               </h4>
-
               <div class="progress progress-xxs">
                 <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
               </div>
@@ -520,5 +504,6 @@ ob_start();
     })
   })
 </script>
+
 </body>
 </html>
