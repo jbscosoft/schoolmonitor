@@ -309,23 +309,23 @@ if (!$studentbio_query){
         echo $mysqli->error;
     }
 }
-function insert_programme() {
-    $name = $_POST['pname'];
-    $category = $_POST['category'];
-    $duration = $_POST['duration'];
-    $gradLoad = $_POST['gradLoad'];
-    $code = $_POST['code'];
+function insert_programme($name,$category,$duration,$gradLoad,$code){
+    //$name = $_POST['pname'];
+    //$category = $_POST['category'];
+    //$duration = $_POST['duration'];
+    //$gradLoad = $_POST['gradLoad'];
+    //$code = $_POST['code'];
     // echo "lllllllllllllllll".$inst_id;
     include 'real-config.php';
-    if (check_program($code) == true) {
+    if (check_program($code) == false) {
         if ($mysqli->query("INSERT INTO `programme` (`name`, `category`,`duration`, `gradLoad`, `code`, `action`) VALUES (
-    '" . $name . "',
-    '" . $category . "',
-    '" . $duration . "',
-    '" . $gradLoad . "',
-    '" . $code . "',
-    'y'
-    );")) {
+        '" . $name . "',
+        '" . $category . "',
+        '" . $duration . "',
+        '" . $gradLoad . "',
+        '" . $code . "',
+        'y'
+        );")) {
             msg_success('Operation Successful', 'Programme Added');
         } else {
             msg_error('Operation Failed', 'An Error Occured');
@@ -335,25 +335,24 @@ function insert_programme() {
         msg_error('Operation Failed', 'This Programme Exists');
     }
 }
-function update_programme($id) {
-    $name = $_POST['pname'];
-    $category = $_POST['category'];
-    $duration = $_POST['duration'];
-    $gradLoad = $_POST['gradLoad'];
-    $code = $_POST['code'];
+function update_programme($id,$name,$category,$duration,$gradLoad,$code) {
+    // $name = $_POST['pname'];
+    // $category = $_POST['category'];
+    // $duration = $_POST['duration'];
+    // $gradLoad = $_POST['gradLoad'];
+    // $code = $_POST['code'];
     // echo "lllllllllllllllll".$inst_id;
     include 'real-config.php';
-    if ($mysqli->query("UPDATE `programme` SET 
-  name = '" . $name . "',
-  category = '" . $category . "',
-  duration =  '" . $duration . "',
-  gradLoad =   '" . $gradLoad . "',
-  code =  '" . $code . "'
-WHERE programmeID = '" . $id . "'")) {
-        msg_success('Operation Successful', 'Programme Updated');
-    } else {
-        msg_error('Operation Failed', 'An Error Occured');
-        echo $mysqli->error;
+    if(check_program($code) == false){
+        if ($mysqli->query("UPDATE `programme` SET name = '" . $name . "',category = '" . $category . "',duration =  '" . $duration . "',gradLoad =   '" . $gradLoad . "',code =  '" . $code . "' WHERE programmeID = '" . $id . "'")) {
+            msg_success('Operation Successful', 'Programme Updated');
+        } else {
+            msg_error('Operation Failed', 'An Error Occured');
+            echo $mysqli->error;
+        }
+    }else{
+        msg_error('Operation Failed', 'This Code exists');
+        echo $mysqli->error;        
     }
 }
 function insert_course() {
@@ -394,18 +393,18 @@ function update_course($id) {
     include 'real-config.php';
     if ($mysqli->query("UPDATE `courseunit` SET 
   name =   '" . $name . "',
-  semesterOffered = '" . $semester . "',
-  yearOffered =  '" . $year . "',
- creditUnits =   '" . $credits . "',
- courseunitCode =  '" . $code . "',
-programme_programmeID =  '" . $programme . "'
-WHERE courseunitID = '" . $id . "'")) {
-        msg_success('Operation Successful', 'Course Unit Updated');
-    } else {
-        msg_error('Operation Failed', 'An Error Occured');
-        echo $mysqli->error;
+    semesterOffered = '" . $semester . "',
+    yearOffered =  '" . $year . "',
+    creditUnits =   '" . $credits . "',
+    courseunitCode =  '" . $code . "',
+    programme_programmeID =  '" . $programme . "'
+    WHERE courseunitID = '" . $id . "'")) {
+            msg_success('Operation Successful', 'Course Unit Updated');
+        } else {
+            msg_error('Operation Failed', 'An Error Occured');
+            echo $mysqli->error;
+        }
     }
-}
 function update_student($id) {
     include_once '../config/login/login-func.php';
     //Biodata
@@ -561,5 +560,107 @@ function update_student($id) {
         mysqli_rollback($mysqli);
         msg_error('Operation Failed', 'An Error Occured (TU5001)');
         echo $mysqli->error;
+    }
+}
+
+/* pull a particular program data */
+function programData($id){
+    include 'real-config.php';
+
+    $query= "SELECT * FROM programme  WHERE programmeID = '".$id."'";
+    $query_run= mysqli_query($mysqli, $query);
+    $row = mysqli_fetch_array($query_run);
+    if($row){
+        echo json_encode($row);
+    }else{
+        msg_error('Operation Failed', 'An Error Occured');
+    }
+}
+
+/* delete a programme */
+function delete_programme($id){
+    include 'real-config.php';
+
+    $query= "DELETE FROM `programme` WHERE programmeID = '".$id."'";
+    $query_run = mysqli_query($mysqli, $query);
+    if($query_run){
+        msg_success('Operation Successful', 'Programme deleted');
+    }else{
+        msg_error('Operation Failed', 'An Error Occured');
+    }
+}
+
+/* Check for a college */
+function check_college($shortname,$fullname) {
+    include 'real-config.php';
+    $query = "SELECT * FROM college WHERE fullname = '".$fullname."' and shortname = '".$shortname."'";
+    $query_run = mysqli_query($mysqli, $query);
+    if (!$query_run) {
+        echo "Query Run Error" . mysqli_error($mysqli);
+    } else {
+        $num_of_rows = mysqli_num_rows($query_run);
+        if ($num_of_rows == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+/* Inserting a College */
+function insert_college($shortname,$fullname){
+    include 'real-config.php';
+    if (check_college($shortname,$fullname) == false) {
+        if ($mysqli->query("INSERT INTO `college` (`fullname`, `shortname`) VALUES ('" . $fullname . "','" . $shortname . "');")) {
+            msg_success('Operation Successful', 'College Added');
+        } else {
+            msg_error('Operation Failed', 'An Error Occured');
+            echo $mysqli->error;
+        }
+    } else {
+        msg_error('Operation Failed', 'This College Exists');
+    }
+}
+
+/* pull a particular college data */
+function collegeData($id){
+    include 'real-config.php';
+
+    $query= "SELECT * FROM college  WHERE collegeId = '".$id."'";
+    $query_run= mysqli_query($mysqli, $query);
+    $row = mysqli_fetch_array($query_run);
+    if($row){
+        echo json_encode($row);
+    }else{
+        msg_error('Operation Failed', 'An Error Occured');
+    }
+}
+
+/* Update a particular college data */
+function update_college($id,$shortname,$fullname){
+    include 'real-config.php';
+    if(check_college($shortname,$fullname) == false){
+        if ($mysqli->query("UPDATE `college` SET fullname = '".$fullname."',shortname = '".$shortname."' WHERE collegeId = '" . $id . "'")) {
+            msg_success('Operation Successful', 'Programme Updated');
+        } else {
+            msg_error('Operation Failed', 'An Error Occured');
+            echo $mysqli->error;
+        }
+    }else{
+        msg_error('Operation Failed', 'This College exists');
+        echo $mysqli->error;        
+    }
+}
+
+/* delete a College */
+function delete_college($id){
+    include 'real-config.php';
+
+    $query= "DELETE FROM `college` WHERE collegeId = '".$id."'";
+    $query_run = mysqli_query($mysqli, $query);
+    if($query_run){
+        msg_success('Operation Successful', 'College deleted');
+    }else{
+        msg_error('Operation Failed', 'An Error Occured');
     }
 }
